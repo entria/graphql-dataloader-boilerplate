@@ -6,7 +6,7 @@ import {
   mutationWithClientMutationId,
 } from 'graphql-relay';
 
-import UserType from '../type/UserType';
+import { UserType } from '../type';
 import { UserLoader } from '../loader';
 
 export default mutationWithClientMutationId({

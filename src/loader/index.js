@@ -1,2 +1,2 @@
-export UserLoader from './UserLoader'
-export ViewerLoader from './ViewerLoader'
+export { default as UserLoader } from './UserLoader';
+export { default as ViewerLoader } from './ViewerLoader';
