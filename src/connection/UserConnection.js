@@ -8,7 +8,7 @@ import {
   connectionDefinitions,
 } from 'graphql-relay';
 
-import UserType from '../type/UserType';
+import { UserType } from '../type';
 
 export default connectionDefinitions({
   name: 'User',

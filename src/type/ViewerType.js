@@ -13,7 +13,7 @@ import {
 } from 'graphql-relay';
 import { NodeInterface } from '../interface/NodeInterface';
 
-import UserType from './UserType';
+import { UserType } from './';
 import { UserLoader } from '../loader';
 import UserConnection from '../connection/UserConnection';
 

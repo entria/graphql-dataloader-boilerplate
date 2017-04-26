@@ -4,7 +4,7 @@ import { GraphQLObjectType } from 'graphql';
 import { NodeField } from '../interface/NodeInterface';
 
 import { ViewerLoader } from '../loader';
-import ViewerType from './ViewerType';
+import { ViewerType } from './';
 
 export default new GraphQLObjectType({
   name: 'Query',
