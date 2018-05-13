@@ -1,5 +1,5 @@
 {
-  "extends": "airbnb/base",
+  "extends": "airbnb-base",
   "parser": "babel-eslint",
   "rules": {
     "no-console": 0,
@@ -7,7 +7,7 @@
     "no-param-reassign": [2, { "props": false }],
     "no-continue": 0,
     "no-underscore-dangle": 0,
-    "generator-star-spacing": 0,
+    "generator-star-spacing": 0
   },
   "env": {
     "jest": true
