@@ -1,7 +1,7 @@
 import { GraphQLObjectType } from 'graphql';
 import { offsetToCursor } from 'graphql-relay';
-import UserConnection from '../connection/UserConnection';
 
+import UserConnection from '../connection/UserConnection';
 import pubSub, { EVENTS } from '../pubSub';
 
 const UserAddedPayloadType = new GraphQLObjectType({
@@ -9,13 +9,11 @@ const UserAddedPayloadType = new GraphQLObjectType({
   fields: () => ({
     userEdge: {
       type: UserConnection.edgeType,
-      resolve: ({ user }) => {
+      resolve: ({ user }) => ({
         // TODO - figure it out how to get loaders from subscription context
-        return {
-          cursor: offsetToCursor(user.id),
-          node: user,
-        };
-      },
+        cursor: offsetToCursor(user.id),
+        node: user,
+      }),
     },
   }),
 });

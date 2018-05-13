@@ -3,16 +3,14 @@ import 'isomorphic-fetch';
 
 import Koa from 'koa';
 import bodyParser from 'koa-bodyparser';
-import convert from 'koa-convert';
 import cors from 'kcors';
 import graphqlHttp from 'koa-graphql';
 import graphqlBatchHttpWrapper from 'koa-graphql-batch';
 import logger from 'koa-logger';
 import Router from 'koa-router';
-// import { print } from 'graphql/language';
 import { graphiqlKoa } from 'apollo-server-koa';
 
-import { schema } from './schema';
+import schema from './schema';
 import { jwtSecret, graphqlPort } from './config';
 import { getUser } from './auth';
 import * as loaders from './loader';
@@ -23,7 +21,9 @@ const router = new Router();
 app.keys = jwtSecret;
 
 const graphqlSettingsPerReq = async req => {
+  console.log('req', req.header.authorization);
   const { user } = await getUser(req.header.authorization);
+  console.log('user', user);
 
   const dataloaders = Object.keys(loaders).reduce(
     (dataloaders, loaderKey) => ({

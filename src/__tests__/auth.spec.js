@@ -1,6 +1,4 @@
 import mongoose from 'mongoose';
-import { graphql } from 'graphql';
-import { schema } from '../schema';
 import { User } from '../model';
 import { setupTest } from '../../test/helper';
 
@@ -8,7 +6,7 @@ import { getUser, generateToken } from '../auth';
 
 const { ObjectId } = mongoose.Types;
 
-beforeEach(async () => await setupTest());
+beforeEach(async () => setupTest());
 
 describe('getUser', () => {
   it('should return an user null when token is null', async () => {
