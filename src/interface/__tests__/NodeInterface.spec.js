@@ -4,7 +4,7 @@ import { schema } from '../../schema';
 import { User } from '../../model';
 import { getContext, setupTest } from '../../../test/helper';
 
-beforeEach(async () => await setupTest());
+beforeEach(async () => setupTest());
 
 it('should load User', async () => {
   const user = new User({
@@ -14,7 +14,7 @@ it('should load User', async () => {
   });
   await user.save();
 
-  //language=GraphQL
+  // language=GraphQL
   const query = `
     query Q {
       node(id: "${toGlobalId('User', user._id)}") {

@@ -1,9 +1,9 @@
 // @flow
 import DataLoader from 'dataloader';
-import { User as UserModel } from '../model';
 import { connectionFromMongoCursor, mongooseLoader } from '@entria/graphql-mongoose-loader';
-
 import type { ConnectionArguments } from 'graphql-relay';
+
+import { User as UserModel } from '../model';
 import type { GraphQLContext } from '../TypeDefinition';
 
 type UserType = {
@@ -37,10 +37,7 @@ export default class User {
 
 export const getLoader = () => new DataLoader(ids => mongooseLoader(UserModel, ids));
 
-const viewerCanSee = (context, data) => {
-  // Anyone can see another user
-  return true;
-};
+const viewerCanSee = (_context, _data) => true; // Anyone can see another user
 
 export const load = async (context: GraphQLContext, id: string): Promise<?User> => {
   if (!id) {

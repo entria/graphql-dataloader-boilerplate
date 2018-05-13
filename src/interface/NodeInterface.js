@@ -4,8 +4,6 @@ import { nodeDefinitions, fromGlobalId } from 'graphql-relay';
 
 import User from '../loader/UserLoader';
 import { UserLoader } from '../loader';
-
-import QueryType from '../type/QueryType';
 import UserType from '../type/UserType';
 
 const { nodeField, nodeInterface } = nodeDefinitions(
@@ -15,8 +13,11 @@ const { nodeField, nodeInterface } = nodeDefinitions(
 
     // console.log('id, type: ', type, id, globalId);
     if (type === 'User') {
-      return await UserLoader.load(context, id);
+      const userLoader = UserLoader.load(context, id);
+      return userLoader;
     }
+
+    return undefined;
   },
   // A method that maps from an object to a type
   obj => {
@@ -24,6 +25,8 @@ const { nodeField, nodeInterface } = nodeDefinitions(
     if (obj instanceof User) {
       return UserType;
     }
+
+    return undefined;
   },
 );
 
