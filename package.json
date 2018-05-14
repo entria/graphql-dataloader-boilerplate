@@ -9,6 +9,7 @@
     "bcryptjs": "^2.4.3",
     "dataloader": "^1.4.0",
     "dotenv-safe": "^4.0.4",
+    "fs-extra-promise": "^1.0.1",
     "graphql": "^0.13.1",
     "graphql-relay": "^0.5.4",
     "graphql-subscriptions": "^0.5.8",
@@ -92,7 +93,8 @@
     "start": "node dist/index.js",
     "test": "jest --coverage",
     "test:watch": "jest --watch --coverage",
-    "update-schema": "babel-node ./scripts/updateSchema.js",
+    "copy-to-project": "babel-node ./scripts/copySchemaToProject.js",
+    "update-schema": "babel-node ./scripts/updateSchema.js && npm run copy-to-project",
     "watch": "nodemon src/index.js --exec babel-node"
   }
 }
