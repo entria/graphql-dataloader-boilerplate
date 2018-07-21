@@ -1,46 +1,50 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
+import { getUser, generateToken } from '../common/auth'
 
-import { getUser, generateToken } from '../auth';
+import {
+  connectMongoose,
+  clearDbAndRestartCounters,
+  disconnectMongoose,
+  createRows,
+} from '../../test/helper'
 
-import { connectMongoose, clearDbAndRestartCounters, disconnectMongoose, createRows } from '../../test/helper';
+const { ObjectId } = mongoose.Types
 
-const { ObjectId } = mongoose.Types;
+beforeAll(connectMongoose)
 
-beforeAll(connectMongoose);
+beforeEach(clearDbAndRestartCounters)
 
-beforeEach(clearDbAndRestartCounters);
-
-afterAll(disconnectMongoose);
+afterAll(disconnectMongoose)
 
 describe('getUser', () => {
   it('should return an user null when token is null', async () => {
-    const token = null;
-    const { user } = await getUser(token);
+    const token = null
+    const { user } = await getUser(token)
 
-    expect(user).toBe(null);
-  });
+    expect(user).toBe(null)
+  })
 
   it('should return null when token is invalid', async () => {
-    const token = 'invalid token';
-    const { user } = await getUser(token);
+    const token = 'invalid token'
+    const { user } = await getUser(token)
 
-    expect(user).toBe(null);
-  });
+    expect(user).toBe(null)
+  })
 
   it('should return null when token do not represent a valid user', async () => {
-    const token = generateToken({ _id: new ObjectId() });
-    const { user } = await getUser(token);
+    const token = generateToken({ _id: new ObjectId() })
+    const { user } = await getUser(token)
 
-    expect(user).toBe(null);
-  });
+    expect(user).toBe(null)
+  })
 
   it('should return user from a valid token', async () => {
-    const me = await createRows.createUser();
+    const me = await createRows.createUser()
 
-    const token = generateToken(me);
-    const { user } = await getUser(token);
+    const token = generateToken(me)
+    const { user } = await getUser(token)
 
-    expect(user.name).toBe(me.name);
-    expect(user.email).toBe(me.email);
-  });
-});
+    expect(user.name).toBe(me.name)
+    expect(user.email).toBe(me.email)
+  })
+})

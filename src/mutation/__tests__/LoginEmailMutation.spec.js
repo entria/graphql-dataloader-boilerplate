@@ -1,20 +1,20 @@
-import { graphql } from 'graphql';
+import { graphql } from 'graphql'
 
-import { schema } from '../../schema';
-import { generateToken } from '../../auth';
+import { schema } from '../../schema'
+import { generateToken } from '../../common/auth'
 import {
   getContext,
   connectMongoose,
   clearDbAndRestartCounters,
   disconnectMongoose,
   createRows,
-} from '../../../test/helper';
+} from '../../../test/helper'
 
-beforeAll(connectMongoose);
+beforeAll(connectMongoose)
 
-beforeEach(clearDbAndRestartCounters);
+beforeEach(clearDbAndRestartCounters)
 
-afterAll(disconnectMongoose);
+afterAll(disconnectMongoose)
 
 it('should not login if email is not in the database', async () => {
   // language=GraphQL
@@ -30,20 +30,20 @@ it('should not login if email is not in the database', async () => {
         error
       }     
     }
-  `;
+  `
 
-  const rootValue = {};
-  const context = getContext();
+  const rootValue = {}
+  const context = getContext()
 
-  const result = await graphql(schema, query, rootValue, context);
-  const { LoginEmail } = result.data;
+  const result = await graphql(schema, query, rootValue, context)
+  const { LoginEmail } = result.data
 
-  expect(LoginEmail.token).toBe(null);
-  expect(LoginEmail.error).toBe('INVALID_EMAIL_PASSWORD');
-});
+  expect(LoginEmail.token).toBe(null)
+  expect(LoginEmail.error).toBe('INVALID_EMAIL_PASSWORD')
+})
 
 it('should not login with wrong password', async () => {
-  const user = await createRows.createUser();
+  const user = await createRows.createUser()
 
   // language=GraphQL
   const query = `
@@ -58,21 +58,21 @@ it('should not login with wrong password', async () => {
         error
       }     
     }
-  `;
+  `
 
-  const rootValue = {};
-  const context = getContext();
+  const rootValue = {}
+  const context = getContext()
 
-  const result = await graphql(schema, query, rootValue, context);
-  const { LoginEmail } = result.data;
+  const result = await graphql(schema, query, rootValue, context)
+  const { LoginEmail } = result.data
 
-  expect(LoginEmail.token).toBe(null);
-  expect(LoginEmail.error).toBe('INVALID_EMAIL_PASSWORD');
-});
+  expect(LoginEmail.token).toBe(null)
+  expect(LoginEmail.error).toBe('INVALID_EMAIL_PASSWORD')
+})
 
 it('should generate token when email and password is correct', async () => {
-  const password = 'awesome';
-  const user = await createRows.createUser({ password });
+  const password = 'awesome'
+  const user = await createRows.createUser({ password })
 
   // language=GraphQL
   const query = `
@@ -87,14 +87,14 @@ it('should generate token when email and password is correct', async () => {
         error
       }     
     }
-  `;
+  `
 
-  const rootValue = {};
-  const context = getContext();
+  const rootValue = {}
+  const context = getContext()
 
-  const result = await graphql(schema, query, rootValue, context);
-  const { LoginEmail } = result.data;
+  const result = await graphql(schema, query, rootValue, context)
+  const { LoginEmail } = result.data
 
-  expect(LoginEmail.token).toBe(generateToken(user));
-  expect(LoginEmail.error).toBe(null);
-});
+  expect(LoginEmail.token).toBe(generateToken(user))
+  expect(LoginEmail.error).toBe(null)
+})

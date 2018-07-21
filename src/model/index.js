@@ -1,1 +1,1 @@
-export User from '../modules/user/UserModel';
+export User from '../modules/user/UserModel'

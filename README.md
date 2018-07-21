@@ -20,7 +20,8 @@ Very simple boilerplate using GraphQL and DataLoader
 │   ├── /interface/          # NodeInterface (Relay)
 │   ├── /loader/             # Loaders of the models using DataLoader
 │   ├── /model/              # Models definition (Mongoose, SQL, Google DataStore)
-│   ├── /mutation/           # Mutations definition
+│   ├── /modules/           # Modules about each entity
+│   ├── /mutation/          # Mutations definition
 ├── /test/                   # Test helpers
 ```
 

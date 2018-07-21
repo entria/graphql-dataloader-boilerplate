@@ -871,29 +871,6 @@
               "args": [],
               "type": {
                 "kind": "OBJECT",
-                "name": "UserAddedPayload",
-                "ofType": null
-              },
-              "isDeprecated": false,
-              "deprecationReason": null
-            }
-          ],
-          "inputFields": null,
-          "interfaces": [],
-          "enumValues": null,
-          "possibleTypes": null
-        },
-        {
-          "kind": "OBJECT",
-          "name": "UserAddedPayload",
-          "description": null,
-          "fields": [
-            {
-              "name": "userEdge",
-              "description": null,
-              "args": [],
-              "type": {
-                "kind": "OBJECT",
                 "name": "UserEdge",
                 "ofType": null
               },
