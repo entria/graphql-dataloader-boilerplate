@@ -1,28 +1,28 @@
-import { GraphQLObjectType } from 'graphql';
-import { offsetToCursor } from 'graphql-relay';
-import UserConnection from '../modules/user/UserConnection';
+import { toGlobalId } from 'graphql-relay'
 
-import pubSub, { EVENTS } from '../pubSub';
-
-const UserAddedPayloadType = new GraphQLObjectType({
-  name: 'UserAddedPayload',
-  fields: () => ({
-    userEdge: {
-      type: UserConnection.edgeType,
-      resolve: ({ user }) => {
-        // TODO - figure it out how to get loaders from subscription context
-        return {
-          cursor: offsetToCursor(user.id),
-          node: user,
-        };
-      },
-    },
-  }),
-});
+import { EVENTS } from '../common/consts'
+import UserConnection from '../modules/user/UserConnection'
+import { UserLoader } from '../loader'
+import { pubsub } from '../common/config'
 
 const userAdded = {
-  type: UserAddedPayloadType,
-  subscribe: () => pubSub.asyncIterator(EVENTS.USER.ADDED),
-};
+  type: UserConnection.edgeType,
+  resolve: async (user, args, context) => {
+    const userAdded = await UserLoader.load(context, user._id)
+    // Returns null if no node was loaded
+    if (!userAdded) {
+      return {
+        error: ERRORS.nodeNotFound,
+      }
+    }
 
-export default userAdded;
+    return {
+      cursor: toGlobalId('User', userAdded),
+      node: userAdded,
+    }
+  },
+
+  subscribe: () => pubsub.asyncIterator(EVENTS.user.added),
+}
+
+export default userAdded

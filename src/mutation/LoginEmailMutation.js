@@ -1,9 +1,9 @@
 // @flow
-import { GraphQLString, GraphQLNonNull } from 'graphql';
-import { mutationWithClientMutationId } from 'graphql-relay';
+import { GraphQLString, GraphQLNonNull } from 'graphql'
+import { mutationWithClientMutationId } from 'graphql-relay'
 
-import { User } from '../model';
-import { generateToken } from '../auth';
+import { User } from '../model'
+import { generateToken } from '../common/auth'
 
 export default mutationWithClientMutationId({
   name: 'LoginEmail',
@@ -16,28 +16,28 @@ export default mutationWithClientMutationId({
     },
   },
   mutateAndGetPayload: async ({ email, password }) => {
-    const user = await User.findOne({ email: email.toLowerCase() });
+    const user = await User.findOne({ email: email.toLowerCase() })
 
     if (!user) {
       return {
         token: null,
         error: 'INVALID_EMAIL_PASSWORD',
-      };
+      }
     }
 
-    const correctPassword = user.authenticate(password);
+    const correctPassword = user.authenticate(password)
 
     if (!correctPassword) {
       return {
         token: null,
         error: 'INVALID_EMAIL_PASSWORD',
-      };
+      }
     }
 
     return {
       token: generateToken(user),
       error: null,
-    };
+    }
   },
   outputFields: {
     token: {
@@ -49,4 +49,4 @@ export default mutationWithClientMutationId({
       resolve: ({ error }) => error,
     },
   },
-});
+})

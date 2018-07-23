@@ -1,9 +1,10 @@
 // @flow
-import { GraphQLString, GraphQLNonNull } from 'graphql';
-import { mutationWithClientMutationId } from 'graphql-relay';
-import { User } from '../model';
-import { generateToken } from '../auth';
-import pubSub, { EVENTS } from '../pubSub';
+import { GraphQLString, GraphQLNonNull } from 'graphql'
+import { mutationWithClientMutationId } from 'graphql-relay'
+import { User } from '../model'
+import { generateToken } from '../common/auth'
+import { EVENTS, ERRORS } from '../common/consts'
+import { pubsub } from '../common/config'
 
 export default mutationWithClientMutationId({
   name: 'RegisterEmail',
@@ -19,28 +20,28 @@ export default mutationWithClientMutationId({
     },
   },
   mutateAndGetPayload: async ({ name, email, password }) => {
-    let user = await User.findOne({ email: email.toLowerCase() });
+    const hasUser = await User.findOne({ email: email.toLowerCase() })
 
-    if (user) {
+    if (hasUser) {
       return {
         token: null,
-        error: 'EMAIL_ALREADY_IN_USE',
-      };
+        error: ERRORS.emailAlreadyInUse,
+      }
     }
 
-    user = new User({
+    const user = new User({
       name,
       email,
       password,
-    });
-    await user.save();
+    })
+    await user.save()
 
-    await pubSub.publish(EVENTS.USER.ADDED, { UserAdded: { user } });
+    await pubsub.publish(EVENTS.user.added, user)
 
     return {
       token: generateToken(user),
       error: null,
-    };
+    }
   },
   outputFields: {
     token: {
@@ -52,4 +53,4 @@ export default mutationWithClientMutationId({
       resolve: ({ error }) => error,
     },
   },
-});
+})

@@ -1,12 +1,17 @@
 // @flow
 
-import { GraphQLObjectType, GraphQLString, GraphQLNonNull, GraphQLID } from 'graphql';
-import { connectionArgs, fromGlobalId } from 'graphql-relay';
+import {
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLNonNull,
+  GraphQLID,
+} from 'graphql'
+import { connectionArgs, fromGlobalId } from 'graphql-relay'
 
-import UserType from '../modules/user/UserType';
-import { nodeField } from '../interface/NodeInterface';
-import { UserLoader } from '../loader';
-import UserConnection from '../modules/user/UserConnection';
+import UserType from '../modules/user/UserType'
+import { nodeField } from '../interface/NodeInterface'
+import { UserLoader } from '../loader'
+import UserConnection from '../modules/user/UserConnection'
 
 export default new GraphQLObjectType({
   name: 'Query',
@@ -15,7 +20,8 @@ export default new GraphQLObjectType({
     node: nodeField,
     me: {
       type: UserType,
-      resolve: (root, args, context) => (context.user ? UserLoader.load(context, context.user._id) : null),
+      resolve: (root, args, context) =>
+        context.user ? UserLoader.load(context, context.user._id) : null,
     },
     user: {
       type: UserType,
@@ -25,8 +31,8 @@ export default new GraphQLObjectType({
         },
       },
       resolve: (obj, args, context) => {
-        const { id } = fromGlobalId(args.id);
-        return UserLoader.load(context, id);
+        const { id } = fromGlobalId(args.id)
+        return UserLoader.load(context, id)
       },
     },
     users: {
@@ -40,4 +46,4 @@ export default new GraphQLObjectType({
       resolve: (obj, args, context) => UserLoader.loadUsers(context, args),
     },
   }),
-});
+})

@@ -77,7 +77,7 @@ type RegisterEmailPayload {
 }
 
 type Subscription {
-  UserAdded: UserAddedPayload
+  UserAdded: UserEdge
 }
 
 """User data"""
@@ -88,10 +88,6 @@ type User implements Node {
   name: String
   email: String
   active: Boolean
-}
-
-type UserAddedPayload {
-  userEdge: UserEdge
 }
 
 """A connection to a list of items."""

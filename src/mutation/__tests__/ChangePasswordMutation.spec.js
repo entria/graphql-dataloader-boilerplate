@@ -1,20 +1,19 @@
-import { graphql } from 'graphql';
+import { graphql } from 'graphql'
 
-import { schema } from '../../schema';
-import { generateToken } from '../../auth';
+import { schema } from '../../schema'
 import {
   getContext,
   connectMongoose,
   clearDbAndRestartCounters,
   disconnectMongoose,
   createRows,
-} from '../../../test/helper';
+} from '../../../test/helper'
 
-beforeAll(connectMongoose);
+beforeAll(connectMongoose)
 
-beforeEach(clearDbAndRestartCounters);
+beforeEach(clearDbAndRestartCounters)
 
-afterAll(disconnectMongoose);
+afterAll(disconnectMongoose)
 
 it('should not change password of non authorized user', async () => {
   // language=GraphQL
@@ -29,20 +28,20 @@ it('should not change password of non authorized user', async () => {
         error
       }
     }
-  `;
+  `
 
-  const rootValue = {};
-  const context = getContext();
+  const rootValue = {}
+  const context = getContext()
 
-  const result = await graphql(schema, query, rootValue, context);
-  const { errors } = result;
+  const result = await graphql(schema, query, rootValue, context)
+  const { errors } = result
 
-  expect(errors.length).toBe(1);
-  expect(errors[0].message).toBe('invalid user');
-});
+  expect(errors.length).toBe(1)
+  expect(errors[0].message).toBe('invalid user')
+})
 
 it('should not change password if oldPassword is invalid', async () => {
-  const user = await createRows.createUser();
+  const user = await createRows.createUser()
 
   // language=GraphQL
   const query = `
@@ -56,20 +55,20 @@ it('should not change password if oldPassword is invalid', async () => {
         error
       }
     }
-  `;
+  `
 
-  const rootValue = {};
-  const context = getContext({ user });
+  const rootValue = {}
+  const context = getContext({ user })
 
-  const result = await graphql(schema, query, rootValue, context);
-  const { ChangePassword } = result.data;
+  const result = await graphql(schema, query, rootValue, context)
+  const { ChangePassword } = result.data
 
-  expect(ChangePassword.error).toBe('INVALID_PASSWORD');
-});
+  expect(ChangePassword.error).toBe('INVALID_PASSWORD')
+})
 
 it('should change password if oldPassword is correct', async () => {
-  const password = 'awesome';
-  const user = await createRows.createUser({ password });
+  const password = 'awesome'
+  const user = await createRows.createUser({ password })
 
   // language=GraphQL
   const query = `
@@ -83,13 +82,13 @@ it('should change password if oldPassword is correct', async () => {
         error
       }
     }
-  `;
+  `
 
-  const rootValue = {};
-  const context = getContext({ user });
+  const rootValue = {}
+  const context = getContext({ user })
 
-  const result = await graphql(schema, query, rootValue, context);
-  const { ChangePassword } = result.data;
+  const result = await graphql(schema, query, rootValue, context)
+  const { ChangePassword } = result.data
 
-  expect(ChangePassword.error).toBe(null);
-});
+  expect(ChangePassword.error).toBe(null)
+})
