@@ -7,8 +7,8 @@ import { pubsub } from '../common/config'
 
 const userAdded = {
   type: UserConnection.edgeType,
-  resolve: async (tattoo, args, context) => {
-    const userAdded = await UserLoader.load(context, tattoo._id)
+  resolve: async (user, args, context) => {
+    const userAdded = await UserLoader.load(context, user._id)
     // Returns null if no node was loaded
     if (!userAdded) {
       return {
